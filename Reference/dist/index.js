@@ -20,7 +20,7 @@
   let mapTileService = platform.getMapTileService({ type: "base" });
   let fleetStyleLayer = mapTileService.createTileLayer(
     "maptile",
-    "normal.day.grey",
+    "reduced.day",
     256 * pixelRatio,
     "png8",
     { ppi: pixelRatio > 1 ? 320 : 100 }
