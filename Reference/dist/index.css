@@ -1,0 +1,14 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.dl-map {
+  position: absolute;
+  top: 5%;
+  bottom: 0;
+  width: 100%;
+}
+#query {
+  width: 100%;
+}

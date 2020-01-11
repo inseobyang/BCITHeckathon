@@ -1,0 +1,72 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="initial-scale=1.0,
+        width=device-width" />
+      <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+        type="text/javascript" charset="utf-8"></script>
+      <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+        type="text/javascript" charset="utf-8"></script>
+        <link type="text/css" rel="stylesheet" href="QDS20.css"/>
+        <link type="text/css" rel="stylesheet" href="QDS20.css"/>
+        <script src="index.js"></script>
+        <script src="ui.js"></script>
+  <!-- SCRIPTS -->
+  </head>
+  <body>
+    <div style="width: 640px; height: 480px" class="dl-map"></div>
+    <!-- APP ID: RRDnDMl5gOCmC91VYFxZ -->
+    <!-- API KEY: 4CujngcqAbmlQtNkwl6WbEZH9Q79aZG4gra3A_UPG50 -->
+    <script>
+    var platform = new H.service.Platform({
+      'apikey': '4CujngcqAbmlQtNkwl6WbEZH9Q79aZG4gra3A_UPG50'
+    }); 
+    </script>
+
+    <script>
+      const pixelRatio = devicePixelRatio > 1 ? 2 : 1;
+let defaultLayers = platform.createDefaultLayers({tileSize: 256 * pixelRatio});
+let mapTileService = platform.getMapTileService({'type': 'base'});
+let fleetStyleLayer = mapTileService.createTileLayer(
+    'maptile',
+    'reduced.night',
+    256 * pixelRatio,
+    'png8',
+    {ppi: pixelRatio > 1 ? 320 : 100}
+);
+const map = new H.Map(
+    document.getElementsByClassName('dl-map')[0],
+    fleetStyleLayer,
+    {pixelRatio}
+);
+
+window.addEventListener('resize', function() {
+    map.getViewPort().resize();
+
+    const behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map));
+const ui = H.ui.UI.createDefault(map, defaultLayers);
+map.setZoom(6);
+map.setCenter(new H.geo.Point(49.2455, -123.09132));
+});
+/*     // Obtain the default map types from the platform object:
+var defaultLayers = platform.createDefaultLayers();
+
+// Instantiate (and display) a map object:
+//block 700, East 28th avenue
+//latitude 49.2455, longitude -123.09132
+var map = new H.Map(
+    document.getElementById('mapContainer'),
+    defaultLayers.vector.normal.map,
+    {
+      zoom: 12,
+      center: { lat: 49.246292, lng: -123.116226 }
+    }); */
+    
+    
+    </script>
+  </body>
+
+<script type="text/javascript" src="../libs/prettyprint.js"></script>
+</body>
+</html>
