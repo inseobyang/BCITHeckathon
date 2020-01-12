@@ -55,25 +55,36 @@ function addInfoBubble(map) {
     false
   );
 
-  addMarkerToGroup(
-    group,
-    { lat: 43.6498, lng: -79.4015 },
-    "Alexandra Park" + "Testing!!!"
-  );
+  var newJSON = [];
 
-  $.ajax({
-    method: "GET",
-    url:
-      "https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=4CujngcqAbmlQtNkwl6WbEZH9Q79aZG4gra3A_UPG50&searchtext=45+Lewis+St+Toronto"
-  }).done(function(data) {
-    console.log(data);
-    // see what properties you need from data object and save it to variable
-    var data = data;
-  });
-
-  Papa.parse("Parking_Tags_Data_2017_1.csv", {
-    complete: function(results) {
-      console.log("Finished:", results.data);
-    }
-  });
+  for (i = 0; i < 900; i++) {
+    let tempString = x[i]["location2"].split(" ").join("+");
+    let checkURL =
+      "https://geocoder.ls.hereapi.com/6.2/geocode.json?apiKey=4CujngcqAbmlQtNkwl6WbEZH9Q79aZG4gra3A_UPG50&searchtext=" +
+      tempString +
+      "+TORONTO";
+    $.ajax({
+      method: "GET",
+      url: checkURL
+    }).done(function(data) {
+      // see what properties you need from data object and save it to variable
+      var data = data;
+      console.log(
+        data.Response.View[0].Result[0].Location.DisplayPosition.Latitude
+      );
+      console.log(
+        data.Response.View[0].Result[0].Location.DisplayPosition.Longitude
+      );
+      addMarkerToGroup(
+        group,
+        {
+          lat:
+            data.Response.View[0].Result[0].Location.DisplayPosition.Latitude,
+          lng:
+            data.Response.View[0].Result[0].Location.DisplayPosition.Longitude
+        },
+        "Alexandra Park" + "Testing!!!"
+      );
+    });
+  }
 }

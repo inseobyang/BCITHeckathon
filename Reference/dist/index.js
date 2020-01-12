@@ -44,4 +44,10 @@
   addInfoBubble(map);
 
   geocode(platform);
+
+  Papa.parse("Parking_Tags_Data_2017_1.csv", {
+    complete: function(results) {
+      console.log("Finished:", results.data);
+    }
+  });
 })();
