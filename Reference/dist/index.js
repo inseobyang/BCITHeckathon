@@ -19,7 +19,7 @@
   });
   let mapTileService = platform.getMapTileService({ type: "base" });
   let fleetStyleLayer = mapTileService.createTileLayer(
-    "maptile",
+    "mapnopttile", //removes public transit markers
     "reduced.day",
     256 * pixelRatio,
     "png8",
@@ -41,78 +41,7 @@
   map.setZoom(13);
   map.setCenter(new H.geo.Point(43.6532, -79.3832));
 
-  let data = [];
-  sample.map((item, i) => {
-    data.push([i, item[0], item[1]]);
-  });
+  addInfoBubble(map);
 
-  // create the provider
-  let provider = new H.datalens.Provider();
-  provider.setData({
-    columns: ["id", "lat", "lng"],
-    rows: data
-  });
-
-  // create the layer
-  let layer = new H.datalens.ObjectLayer(provider, {
-    rowToMapObject: row => {
-      return H.datalens.ObjectLayer.createReusableMarker(
-        row.id,
-        new H.geo.Point(row.lat, row.lng)
-      );
-    },
-    rowToStyle: (row, zoom) => {
-      let icon = H.datalens.ObjectLayer.createIcon(
-        [
-          "svg",
-          {
-            viewBox: "-20 -20 40 40"
-          },
-          [
-            "circle",
-            {
-              r: 6,
-              fill: "#F38630",
-              stroke: "#000000"
-            }
-          ]
-        ],
-        { size: 25 * pixelRatio }
-      );
-
-      return { icon };
-    },
-    transitionOptions: row => {
-      return {
-        duration: (Math.floor(Math.random() * 4) + 2) * 1000,
-        easing: "ease-in-out",
-        interp: "slerp"
-      };
-    }
-  });
-  map.addLayer(layer);
-
-  // update marker positions periodically
-  function updateMarkerPositions() {
-    let copy = sample.slice();
-    let data = [];
-
-    shuffle(copy);
-
-    copy.map((item, i) => {
-      data.push([i, item[0], item[1]]);
-    });
-
-    provider.setData({
-      columns: ["id", "lat", "lng"],
-      rows: data
-    });
-  }
-
-  function shuffle(a) {
-    for (let i = a.length; i; i--) {
-      let j = Math.floor(Math.random() * i);
-      [a[i - 1], a[j]] = [a[j], a[i - 1]];
-    }
-  }
+  geocode(platform);
 })();
